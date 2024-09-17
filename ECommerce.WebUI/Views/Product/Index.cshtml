@@ -1,0 +1,49 @@
+﻿@model ProductListViewModel
+
+<div class="sorting-options">
+    <a href="/Product/Index?sort=@(Model.CurrentSort == "name_asc" ? "name_desc" : "name_asc")&category=@Model.CurrentCategory&page=@Model.CurrentPage" class="btn btn-primary">
+        Sort @(Model.CurrentSort == "name_asc" ? "Z-A" : "A-Z")
+    </a>
+
+    <a href="/Product/Index?sort=@(Model.CurrentSort == "price_asc" ? "price_desc" : "price_asc")&category=@Model.CurrentCategory&page=@Model.CurrentPage" class="btn btn-primary">
+        Sort @(Model.CurrentSort == "price_asc" ? "Higher to Lower" : "Lower to Higher")
+    </a>
+</div>
+
+@if (Model.Products == null || Model.Products.Count == 0)
+{
+    <span class="alert alert-danger">No Product exist</span>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Unit Price</th>
+                <th>UnitsInStock</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.UnitPrice</td>
+                    <td>@item.UnitsInStock</td>
+                    <td>
+                        <a href="/Cart/AddToCart?productId=@item.ProductId&page=@Model.CurrentPage&category=@Model.CurrentCategory"
+                           class="btn btn-xs btn-success">Add To Cart</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <product-list-pager current-category="@Model.CurrentCategory"
+                        current-page="@Model.CurrentPage"
+                        page-count="@Model.PageCount"
+                        page-size="@Model.PageSize">
+    </product-list-pager>
+}
