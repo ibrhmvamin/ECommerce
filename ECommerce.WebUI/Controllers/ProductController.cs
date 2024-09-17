@@ -14,6 +14,7 @@ namespace ECommerce.WebUI.Controllers
             _productService = productService;
         }
 
+
         // GET: ProductController
         public async Task<ActionResult> Index(int page = 1, int category = 0, string sort = "")
         {
