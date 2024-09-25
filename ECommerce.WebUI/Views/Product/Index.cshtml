@@ -1,6 +1,8 @@
 ﻿@model ProductListViewModel
 
 <div class="sorting-options">
+    <input type="text" id="searchInput" placeholder="Search products..." />
+
     <a href="/Product/Index?sort=@(Model.CurrentSort == "name_asc" ? "name_desc" : "name_asc")&category=@Model.CurrentCategory&page=@Model.CurrentPage" class="btn btn-primary">
         Sort @(Model.CurrentSort == "name_asc" ? "Z-A" : "A-Z")
     </a>
@@ -12,7 +14,7 @@
 
 @if (Model.Products == null || Model.Products.Count == 0)
 {
-    <span class="alert alert-danger">No Product exist</span>
+    <span class="alert alert-danger">No products exist</span>
 }
 else
 {
@@ -25,7 +27,7 @@ else
                 <th></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="productList">
             @foreach (var item in Model.Products)
             {
                 <tr>

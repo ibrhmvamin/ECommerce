@@ -2,6 +2,7 @@
 using ECommerce.WebUI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.WebUI.Controllers
 {
@@ -13,6 +14,34 @@ namespace ECommerce.WebUI.Controllers
         {
             _productService = productService;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string search)
+        {
+            if (string.IsNullOrEmpty(search))
+            {
+                return Json(Enumerable.Empty<object>()); 
+            }
+
+            var products = await _productService.GetAllAsync();
+
+            var filteredProducts = products
+                .Where(p => p.ProductName.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                            p.ProductName.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .Select(p => new
+                {
+                    productId = p.ProductId,
+                    productName = p.ProductName,
+                    unitPrice = p.UnitPrice,
+                    unitsInStock = p.UnitsInStock
+                })
+                .ToList();
+
+            return Json(filteredProducts);
+        }
+
+
+
 
 
         // GET: ProductController
